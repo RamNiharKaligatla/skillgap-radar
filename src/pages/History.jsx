@@ -16,14 +16,7 @@ export default function History() {
 
                 const data = await res.json();
 
-                const parsed = data.map(row => ({
-                    ...row,
-                    skills: JSON.parse(row.skills),
-                    requiredSkills: JSON.parse(row.requiredSkills),
-                    missingSkills: JSON.parse(row.missingSkills)
-                }));
-
-                setRecords(parsed);
+                setRecords(data);
             }
             catch (err) {
                 setError(err.message);
@@ -55,7 +48,7 @@ export default function History() {
 
                 <tbody>
                     {records.map(row => (
-                        <tr key={row.id}>
+                        <tr key={row._id}>
                             <td>{row.createdAt}</td>
                             <td>{row.role}</td>
                             <td>{row.skills.join(", ")}</td>
