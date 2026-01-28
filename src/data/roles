@@ -1,0 +1,11 @@
+export const roleSkills = {
+    "Frontend Developer": [
+        "HTML", "CSS", "JavaScript", "React", "Git"
+    ],
+    "Backend Developer": [
+        "Node.js", "Express", "Databases", "API", "Authentication"
+    ],
+    "Data Analyst": [
+        "Python", "SQL", "Statistics", "Excel", "Visualization"
+    ]
+};
