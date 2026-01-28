@@ -18,4 +18,4 @@ A full-stack web-application that analyzes a user's skills for a chosen role, id
 React, Vite, React Router
 
 ### Backend
-Node.js, Express, SQLite
+Node.js, Express, MongoDB
