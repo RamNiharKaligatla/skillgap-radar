@@ -1,15 +1,19 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 
 const app = express();
 
-const db = require("./db");
+const connectDB = require("./db/mongo");
+connectDB();
 
-require("dotenv").config()
+const Analysis = require("./models/Analysis");
 
 app.use(cors({
-    origin: process.env.CLIENT_URL
+    origin: process.env.CLIENT_URL || "http://localhost:5173"
 }));
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -19,10 +23,10 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
-    console.log("Backend running on http://localhost:4000")
+    console.log(`Backend running on http://localhost:${PORT}`);
 });
 
-app.post("/analyze", (req, res) => {
+app.post("/analyze", async (req, res) => {
     const { role, skills, requiredSkills } = req.body;
 
     if (!role || !Array.isArray(skills) || !Array.isArray(requiredSkills)) {
@@ -35,15 +39,12 @@ app.post("/analyze", (req, res) => {
         skill => !skills.includes(skill)
     );
 
-    db.prepare(`
-        INSERT INTO analyses (role, skills, requiredSkills, missingSkills)
-        VALUES (?, ?, ?, ?)
-    `).run(
+    await Analysis.create({
         role,
-        JSON.stringify(skills),
-        JSON.stringify(requiredSkills),
-        JSON.stringify(missing)
-    )
+        skills,
+        requiredSkills,
+        missingSkills: missing,
+    });
 
     res.json({
         role,
@@ -52,10 +53,10 @@ app.post("/analyze", (req, res) => {
     });
 });
 
-app.get("/history", (req, res) => {
-    const rows = db.prepare(
-        "SELECT * FROM analyses ORDER BY createdAt DESC LIMIT 20"
-    ).all();
+app.get("/history", async (req, res) => {
+    const records = await Analysis.find()
+        .sort({ createdAt: -1 })
+        .limit(20);
 
-    res.json(rows);
+    res.json(records);
 });
