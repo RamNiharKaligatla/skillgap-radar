@@ -1,6 +1,6 @@
 # SkillGap Radar
 
-A full-stack web-application that analyzes a user's skills for a chosen role, identifies missing skills, and stores historical results for future analysis.
+A full-stack MERN web-application that analyzes a user's skills for a chosen role, identifies missing skills, and stores historical results for future analysis.
 
 ## Features
 
