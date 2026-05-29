@@ -15,7 +15,11 @@ A full-stack MERN web-application that analyzes a user's skills for a chosen rol
 ## Tech Stack
 
 ### Frontend
-React, Vite, React Router
+- React
+- Vite
+- React Router
 
 ### Backend
-Node.js, Express, MongoDB
+- Node.js
+- Express
+- MongoDB
