@@ -22,10 +22,13 @@ export default function SkillInput({ role }) {
             setLoading(true);
             setError(null);
 
+            const token = localStorage.getItem("token");
+
             const response = await fetch(`${import.meta.env.VITE_API_URL}/analyze`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     role,
@@ -40,6 +43,9 @@ export default function SkillInput({ role }) {
             }
 
             const data = await response.json();
+            setAnalysis(data);
+
+            localStorage.setItem("token", data.token);
             setAnalysis(data);
         }
         catch (err) {
@@ -71,7 +77,14 @@ export default function SkillInput({ role }) {
                 <strong>Selected skills:</strong> {selectedSkills.join(", ")}
             </p>
 
-            <button onClick={analyzeSkills} disabled={loading}>
+            <p>
+                <strong>Skill Match:</strong> {analysis.percentage}%
+            </p>
+
+            <button
+                onClick={analyzeSkills}
+                disabled={loading || selectedSkills.length === 0}
+            >
                 {loading ? "Analyzing..." : "Analyze Skill Gap"}
             </button>
 

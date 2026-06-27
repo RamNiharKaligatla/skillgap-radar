@@ -8,10 +8,21 @@ export default function History() {
     useEffect(() => {
         async function fetchHistory() {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/history`);
+                const token = localStorage.getItem("token");
+
+                const res = await fetch(
+                    `${import.meta.env.VITE_API_URL}/history`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
 
                 if (!res.ok) {
-                    throw new Error("Failed to load history");
+                    const err = await res.json();
+                    console.log(err);
+                    throw new Error(err.error || "Failed to load history");
                 }
 
                 const data = await res.json();
@@ -31,6 +42,15 @@ export default function History() {
 
     if (loading) return <p>Loading History...</p>;
     if (error) return <p style={{ color: "red" }}>{error}</p>;
+    if (records.length === 0) {
+        return (
+            <div>
+                <h1>Analysis History</h1>
+                <p>No analyses yet.</p>
+                <p>Analyze your first role</p>
+            </div>
+        )
+    }
 
     return (
         <div>
@@ -49,7 +69,7 @@ export default function History() {
                 <tbody>
                     {records.map(row => (
                         <tr key={row._id}>
-                            <td>{row.createdAt}</td>
+                            <td>{new Date(row.createdAt).toLocaleString()}</td>
                             <td>{row.role}</td>
                             <td>{row.skills.join(", ")}</td>
                             <td>{row.missingSkills.join(", ")}</td>
