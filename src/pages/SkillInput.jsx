@@ -76,11 +76,7 @@ export default function SkillInput({ role }) {
             <p>
                 <strong>Selected skills:</strong> {selectedSkills.join(", ")}
             </p>
-
-            <p>
-                <strong>Skill Match:</strong> {analysis.percentage}%
-            </p>
-
+            
             <button
                 onClick={analyzeSkills}
                 disabled={loading || selectedSkills.length === 0}
