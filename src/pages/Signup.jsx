@@ -14,7 +14,7 @@ export default function Signup() {
         if (localStorage.getItem("token")) {
             navigate("/roles");
         }
-    }, []);
+    }, [navigate]);
 
     async function handleSignup(e) {
         e.preventDefault();

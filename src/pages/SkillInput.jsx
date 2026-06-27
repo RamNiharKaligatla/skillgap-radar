@@ -93,12 +93,30 @@ export default function SkillInput({ role }) {
             {analysis && (
                 <>
                     <h2>Server Analysis</h2>
-                    <p><strong>Role:</strong> {analysis.role}</p>
-                    <p><strong>Matched Skills:</strong> {analysis.matched}</p>
-                    <p><strong>Missing Skills:</strong></p>
+
+                    <p>
+                        <strong>Role:</strong> {analysis.role}
+                    </p>
+                    <p>
+                        <strong>Matched Skills:</strong> {analysis.matched}
+                    </p>
+                    <p>
+                        <strong>Skill Match:</strong> {analysis.percentage}%
+                    </p>
+
+                    <h3>Matched Skills</h3>
+
+                    <ul>
+                        {selectedSkills.map(skill => (
+                            <li key={skill}>✅ {skill}</li>
+                        ))}
+                    </ul>
+
+                    <h3>Missing Skills</h3>
+
                     <ul>
                         {analysis.missingSkills.map(skill => (
-                            <li key={skill}>{skill}</li>
+                            <li key={skill}>❌ {skill}</li>
                         ))}
                     </ul>
                 </>
